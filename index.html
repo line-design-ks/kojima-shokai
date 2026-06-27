@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小島商会 | 熱帯魚・観賞魚・昆虫販売 神戸市灘区</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      color: #333;
+      background: #eef2f7;
+    }
+
+    a { color: #1565c0; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ====== デモバナー ====== */
+    .demo-banner {
+      background: #e65100;
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .demo-banner span {
+      opacity: 0.85;
+      font-weight: 400;
+      margin-left: 8px;
+      font-size: 12px;
+    }
+
+    /* ====== お知らせバー ====== */
+    .announce-bar {
+      background: #1565c0;
+      color: #fff;
+      text-align: center;
+      padding: 9px 16px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .announce-bar a { color: #fff; font-weight: bold; }
+
+    /* ====== ヘッダー ====== */
+    header {
+      background: #fff;
+      text-align: center;
+      padding: 18px 16px;
+      border-bottom: 1px solid #dde3ee;
+    }
+    .header-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-mark {
+      width: 52px; height: 52px;
+      background: #1565c0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .logo-text-wrap { text-align: left; }
+    .logo-small { font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+    .logo-name { font-size: 26px; font-weight: 800; color: #1565c0; letter-spacing: 1px; line-height: 1.2; }
+    .logo-sub-jp { font-size: 11px; color: #888; letter-spacing: 1px; }
+
+    /* ====== ナビ ====== */
+    nav {
+      background: #1565c0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    nav a:first-child { border-left: 1px solid rgba(255,255,255,0.15); }
+    nav a:hover { background: rgba(0,0,0,0.15); text-decoration: none; }
+    nav a.active { background: rgba(0,0,0,0.2); }
+    nav a span { font-size: 10px; opacity: 0.75; margin-top: 1px; letter-spacing: 1px; }
+    .nav-icon { font-size: 16px; padding: 10px 18px; }
+
+    /* ====== ヒーロー（水槽アニメーション） ====== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      background: linear-gradient(180deg, #0a2a6e 0%, #0d3b8a 35%, #0a5c8a 75%, #063a5a 100%);
+      overflow: hidden;
+    }
+    .hero-water-surface {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: rgba(255,255,255,0.12);
+      animation: waveSurface 3s ease-in-out infinite;
+    }
+    @keyframes waveSurface {
+      0%,100% { opacity: 0.12; } 50% { opacity: 0.22; }
+    }
+    .hero-light-ray {
+      position: absolute;
+      top: 0;
+      width: 60px; height: 220px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 100%);
+      transform-origin: top center;
+      animation: lightSway 6s ease-in-out infinite;
+    }
+    @keyframes lightSway {
+      0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); }
+    }
+    .hero-sand {
+      position: absolute;
+      bottom: 0; width: 100%; height: 40px;
+      background: linear-gradient(180deg, #7a5c10 0%, #9a7220 100%);
+    }
+    .hero-sand::before {
+      content: '';
+      position: absolute;
+      top: -10px; left: 0; right: 0; height: 18px;
+      background:
+        radial-gradient(ellipse 35px 10px at 10% 50%, #9a7220 48%, transparent 50%),
+        radial-gradient(ellipse 50px 12px at 30% 50%, #9a7220 48%, transparent 50%),
+        radial-gradient(ellipse 40px 11px at 52% 50%, #9a7220 48%, transparent 50%),
+        radial-gradient(ellipse 45px 11px at 72% 50%, #9a7220 48%, transparent 50%),
+        radial-gradient(ellipse 35px 10px at 90% 50%, #9a7220 48%, transparent 50%);
+    }
+    .hero-plant {
+      position: absolute;
+      bottom: 40px;
+      font-size: 38px;
+      animation: plantSway 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    @keyframes plantSway {
+      0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); }
+    }
+    .hero-fish {
+      position: absolute;
+      animation: fishSwim linear infinite;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+    }
+    @keyframes fishSwim {
+      0% { left: -100px; } 100% { left: 110%; }
+    }
+    .hero-fish.left {
+      animation-name: fishSwimLeft;
+      transform: scaleX(-1);
+    }
+    @keyframes fishSwimLeft {
+      0% { left: 110%; } 100% { left: -100px; }
+    }
+    .hero-fish-label {
+      position: absolute;
+      font-size: 10px;
+      color: rgba(255,255,255,0.85);
+      white-space: nowrap;
+      top: -18px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.35);
+      padding: 2px 7px;
+      border-radius: 99px;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-logo-mark {
+      width: 64px; height: 64px;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 14px;
+    }
+    .hero h1 { font-size: 13px; letter-spacing: 3px; opacity: 0.85; margin-bottom: 4px; }
+    .hero h2 { font-size: 38px; font-weight: 900; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+    .hero-jp { font-size: 12px; letter-spacing: 2px; opacity: 0.75; margin-bottom: 20px; }
+    .hero-catch { font-size: 15px; opacity: 0.9; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+
+    /* ====== メインレイアウト ====== */
+    .main-wrap {
+      max-width: 1060px;
+      margin: 28px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 290px;
+      gap: 24px;
+    }
+
+    /* ====== カード共通 ====== */
+    .card {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid #dde3ee;
+    }
+    .card-header {
+      background: #1565c0;
+      color: #fff;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ====== 商品カテゴリ ====== */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: #dde3ee;
+    }
+    .cat-item {
+      background: #fff;
+      padding: 14px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .cat-item:hover { background: #f0f4ff; }
+    .cat-thumb {
+      width: 44px; height: 44px;
+      background: #eef2f7;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .cat-name { font-size: 13px; font-weight: 500; color: #1565c0; }
+    .cat-en { font-size: 10px; color: #999; margin-top: 1px; }
+
+    /* ====== ブログ記事 ====== */
+    .blog-item {
+      display: flex;
+      gap: 14px;
+      padding: 16px;
+      border-bottom: 1px solid #eef2f7;
+      transition: background 0.15s;
+    }
+    .blog-item:last-child { border-bottom: none; }
+    .blog-item:hover { background: #f8faff; }
+    .blog-thumb {
+      width: 120px; height: 80px;
+      background: #d0ddf0;
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    .blog-cat-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      background: #1565c0;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    .blog-title { font-size: 14px; font-weight: 600; color: #1565c0; margin-bottom: 5px; line-height: 1.4; }
+    .blog-excerpt { font-size: 12px; color: #666; line-height: 1.6; }
+    .blog-date { font-size: 11px; color: #999; margin-top: 5px; }
+
+    /* ====== サイドバー ====== */
+    .sidebar-shop-img {
+      width: 100%; height: 160px;
+      background: linear-gradient(135deg, #0d3b7a, #1565c0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px;
+    }
+    .sidebar-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px;
+      border-bottom: 1px solid #eef2f7;
+    }
+    .sidebar-logo-mark {
+      width: 64px; height: 64px;
+      background: #1565c0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+      color: #fff;
+      margin-top: -32px;
+      border: 3px solid #fff;
+    }
+    .sidebar-shop-name { font-size: 15px; font-weight: 700; margin-top: 8px; text-align: center; }
+    .sidebar-shop-catch { font-size: 11px; color: #888; text-align: center; }
+    .sidebar-desc { font-size: 12px; color: #555; line-height: 1.8; padding: 12px 14px; border-bottom: 1px solid #eef2f7; }
+    .sidebar-sns {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+    }
+    .sns-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #eef2f7;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .sns-btn:hover { background: #d0ddf0; }
+
+    .sidebar-info { padding: 14px; }
+    .info-row {
+      font-size: 12px; color: #555;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f4f7;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 11px; color: #1565c0; font-weight: 600; min-width: 48px; }
+
+    /* ====== お問い合わせ ====== */
+    .contact-box {
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #dde3ee;
+      padding: 28px 20px;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+    .contact-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; }
+    .contact-tel { font-size: 28px; font-weight: 800; color: #1565c0; margin-bottom: 8px; }
+    .contact-hours { font-size: 12px; color: #666; line-height: 1.9; margin-bottom: 18px; }
+    .line-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #1565c0;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .line-btn:hover { background: #0d4a9e; text-decoration: none; color: #fff; }
+
+    /* ====== フッター ====== */
+    footer {
+      background: #0d3b7a;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 22px 16px;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    footer a { color: rgba(255,255,255,0.5); margin: 0 8px; }
+
+    /* ====== スマホ対応 ====== */
+    @media (max-width: 720px) {
+      .main-wrap { grid-template-columns: 1fr; }
+      .hero { height: 280px; }
+      .hero h2 { font-size: 26px; }
+      nav { flex-wrap: wrap; }
+      nav a { padding: 8px 12px; font-size: 12px; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- デモバナー -->
+<div class="demo-banner">
+  ⚠️ これはデモ用サンプルサイトです<span>実際の店舗情報・在庫情報とは異なります</span>
+</div>
+
+<!-- お知らせバー -->
+<div class="announce-bar">
+  🛒 ｜ <a href="#">入荷情報・お得な生体はこちら</a> ／
+</div>
+
+<!-- ヘッダー -->
+<header>
+  <div class="header-logo">
+    <div class="logo-mark">🐟</div>
+    <div class="logo-text-wrap">
+      <div class="logo-small">AQUA SHOP & INSECT</div>
+      <div class="logo-name">小島商会</div>
+      <div class="logo-sub-jp">アクアショップ コジマショウカイ</div>
+    </div>
+  </div>
+</header>
+
+<!-- ナビゲーション -->
+<nav>
+  <a href="#products" class="active">商品一覧<span>products</span></a>
+  <a href="#about">店舗情報<span>about</span></a>
+  <a href="#blog">店舗ブログ<span>blog</span></a>
+  <a href="#contact">お問い合わせ<span>contact</span></a>
+  <a href="#insect">昆虫図鑑<span>zukan</span></a>
+  <a href="#" class="nav-icon">📷</a>
+</nav>
+
+<!-- ヒーロー（水槽アニメーション） -->
+<div class="hero">
+  <div class="hero-water-surface"></div>
+
+  <!-- 光の筋 -->
+  <div class="hero-light-ray" style="left:8%;animation-delay:0s"></div>
+  <div class="hero-light-ray" style="left:26%;animation-delay:-2s"></div>
+  <div class="hero-light-ray" style="left:50%;animation-delay:-4s"></div>
+  <div class="hero-light-ray" style="left:72%;animation-delay:-1s"></div>
+  <div class="hero-light-ray" style="left:88%;animation-delay:-3s"></div>
+
+  <!-- 気泡 -->
+  <div id="hero-bubbles" style="position:absolute;inset:0;pointer-events:none;"></div>
+
+  <!-- 水草・岩 -->
+  <div class="hero-plant" style="left:3%;animation-delay:-1s;font-size:46px">🌿</div>
+  <div class="hero-plant" style="left:10%;animation-delay:-0.5s">🌱</div>
+  <div class="hero-plant" style="left:80%;animation-delay:-2s;font-size:44px">🌿</div>
+  <div class="hero-plant" style="left:88%;animation-delay:-1.5s">🌿</div>
+  <div class="hero-plant" style="left:94%;animation-delay:-0.8s">🌱</div>
+  <div style="position:absolute;bottom:40px;left:22%;font-size:30px">🪨</div>
+  <div style="position:absolute;bottom:40px;left:58%;font-size:24px">🪨</div>
+  <div style="position:absolute;bottom:40px;left:68%;font-size:20px">🪨</div>
+
+  <!-- 魚たち -->
+  <div class="hero-fish" style="top:16%;font-size:44px;animation-duration:10s;animation-delay:0s">
+    <span class="hero-fish-label">アロワナ</span>🐊
+  </div>
+  <div class="hero-fish left" style="top:42%;font-size:34px;animation-duration:13s;animation-delay:-4s">
+    <span class="hero-fish-label" style="transform:translateX(-50%) scaleX(-1)">ポリプテルス</span>🦕
+  </div>
+  <div class="hero-fish" style="top:60%;font-size:30px;animation-duration:15s;animation-delay:-7s">
+    <span class="hero-fish-label">ナマズ</span>🐟
+  </div>
+  <div class="hero-fish left" style="top:52%;font-size:28px;animation-duration:11s;animation-delay:-9s">
+    <span class="hero-fish-label" style="transform:translateX(-50%) scaleX(-1)">ピラニア</span>🐡
+  </div>
+  <!-- 小魚の群れ -->
+  <div class="hero-fish" style="top:28%;font-size:17px;animation-duration:7s;animation-delay:-2s">🐠</div>
+  <div class="hero-fish" style="top:31%;font-size:15px;animation-duration:7s;animation-delay:-2.5s">🐠</div>
+  <div class="hero-fish" style="top:25%;font-size:16px;animation-duration:7s;animation-delay:-3s">🐠</div>
+
+  <!-- 砂 -->
+  <div class="hero-sand"></div>
+
+  <!-- テキストオーバーレイ -->
+  <div class="hero-content">
+    <div class="hero-logo-mark">🐟</div>
+    <h1>AQUA SHOP & INSECT</h1>
+    <h2>小島商会</h2>
+    <div class="hero-jp">アクアショップ コジマショウカイ</div>
+    <div class="hero-catch">マニアックな熱帯魚・古代魚・昆虫が集まる神戸の専門店</div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var wrap = document.getElementById('hero-bubbles');
+    if(!wrap) return;
+    for(var i=0;i<20;i++){
+      var b = document.createElement('div');
+      b.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,0.18);animation:heroBubble linear infinite;';
+      var size = (4 + Math.random()*7) + 'px';
+      b.style.width = b.style.height = size;
+      b.style.left = (Math.random()*100)+'%';
+      b.style.bottom = '-20px';
+      b.style.animationDuration = (4+Math.random()*7)+'s';
+      b.style.animationDelay = (-Math.random()*10)+'s';
+      wrap.appendChild(b);
+    }
+    var style = document.createElement('style');
+    style.textContent = '@keyframes heroBubble{0%{transform:translateY(0) scale(1);opacity:0.6}100%{transform:translateY(-450px) scale(1.5);opacity:0}}';
+    document.head.appendChild(style);
+  })();
+</script>
+
+<!-- メインコンテンツ -->
+<div class="main-wrap">
+
+  <!-- 左カラム -->
+  <div>
+
+    <!-- 商品カテゴリ -->
+    <div class="card" id="products">
+      <div class="card-header">🐠 商品カテゴリ一覧</div>
+      <div class="cat-grid">
+        <div class="cat-item">
+          <div class="cat-thumb">🐊</div>
+          <div><div class="cat-name">アロワナ一覧</div><div class="cat-en">Arowana</div></div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-thumb">🦕</div>
+          <div><div class="cat-name">ポリプテルス一覧</div><div class="cat-en">Polypterus</div></div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-thumb">🐟</div>
+          <div><div class="cat-name">ナマズ一覧</div><div class="cat-en">Catfish</div></div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-thumb">🐠</div>
+          <div><div class="cat-name">肉食魚一覧</div><div class="cat-en">Predatory Fish</div></div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-thumb">🐡</div>
+          <div><div class="cat-name">古代魚一覧</div><div class="cat-en">Ancient Fish</div></div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-thumb">🪲</div>
+          <div><div class="cat-name">昆虫一覧</div><div class="cat-en">Insects</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 店舗ブログ -->
+    <div class="card" id="blog">
+      <div class="card-header">✍️ 店舗ブログ</div>
+
+      <div class="blog-item">
+        <div class="blog-thumb">🪲</div>
+        <div>
+          <div class="blog-cat-badge">昆虫採集</div>
+          <div class="blog-title">初夏の採集記録　ミヤマクワガタ大物との出会い</div>
+          <div class="blog-excerpt">標高900mの山中で、今季初のミヤマクワガタのオスを採集。大アゴが80mmを超える個体で…</div>
+          <div class="blog-date">2024年6月15日</div>
+        </div>
+      </div>
+
+      <div class="blog-item">
+        <div class="blog-thumb">🐊</div>
+        <div>
+          <div class="blog-cat-badge">熱帯魚</div>
+          <div class="blog-title">アロワナ飼育10年目で気づいたこと</div>
+          <div class="blog-excerpt">シルバーアロワナを10年間飼育してきた経験から、初心者が知っておくべきポイントをまとめました…</div>
+          <div class="blog-date">2024年5月28日</div>
+        </div>
+      </div>
+
+      <div class="blog-item">
+        <div class="blog-thumb">🦕</div>
+        <div>
+          <div class="blog-cat-badge">熱帯魚</div>
+          <div class="blog-title">ポリプテルスの混泳　相性のいい魚種まとめ</div>
+          <div class="blog-excerpt">古代魚ポリプテルスは意外と穏やかな性格。混泳できる魚種と注意点を実体験をもとに紹介します…</div>
+          <div class="blog-date">2024年5月10日</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- お問い合わせ -->
+    <div id="contact">
+      <div class="contact-box">
+        <div class="contact-title">お問い合わせ・ご相談はお気軽に</div>
+        <div class="contact-tel">📞 078-802-3013</div>
+        <div class="contact-hours">
+          平日：13:00 〜 19:00<br>
+          土日祝：11:00 〜 19:00
+        </div>
+        <a href="https://line.me" class="line-btn">
+          <span>💬 公式LINEから問い合わせる</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- サイドバー -->
+  <div>
+    <div class="card">
+      <div class="sidebar-shop-img">← ここに店舗写真が入ります →</div>
+      <div class="sidebar-logo-wrap">
+        <div class="sidebar-logo-mark">🐟</div>
+        <div class="sidebar-shop-name">小島商会</div>
+        <div class="sidebar-shop-catch">神戸の熱帯魚・昆虫専門店</div>
+      </div>
+      <div class="sidebar-desc">
+        小島商会は、兵庫県神戸市灘区にある熱帯魚専門店です。<br><br>
+        特に肉食大型魚・古代魚・ナマズを中心に、マニアックな魚種を数多く取り扱っております。<br><br>
+        店頭では実際に魚の状態や泳ぎ姿をご覧いただけます。ぜひお気軽にご来店ください。
+      </div>
+      <div class="sidebar-sns">
+        <div class="sns-btn">📷</div>
+        <div class="sns-btn">▶️</div>
+        <div class="sns-btn">💬</div>
+        <div class="sns-btn">✉️</div>
+      </div>
+    </div>
+
+    <div class="card" id="about">
+      <div class="card-header">📍 店舗情報</div>
+      <div class="sidebar-info">
+        <div class="info-row"><span class="info-label">住所</span>〒657-0045<br>兵庫県神戸市灘区<br>下河原通り3丁目5-13</div>
+        <div class="info-row"><span class="info-label">電話</span>078-802-3013</div>
+        <div class="info-row"><span class="info-label">取扱</span>肉食大型魚・古代魚・ナマズ・昆虫</div>
+        <div class="info-row"><span class="info-label">特徴</span>マニアックな商品を得意としています</div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /.main-wrap -->
+
+<!-- フッター -->
+<footer>
+  <p style="margin-bottom:8px;">
+    <a href="#">ホーム</a>
+    <a href="#">店舗情報</a>
+    <a href="#">プライバシーポリシー</a>
+    <a href="#">お問い合わせ</a>
+  </p>
+  <p>&copy; 2024 小島商会 All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
